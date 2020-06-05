@@ -12,7 +12,7 @@ dsl_definitions:
   client_config: &client_config
     username: { get_secret: openstack_username }
     password: { get_secret: openstack_password }
-    project_name: { get_input: openstack_tenant }
+    project_name: { get_secret: openstack_tenant }
     auth_url: { get_secret: openstack_auth_url }
     region_name: { get_secret: openstack_region }
     user_domain_name: { get_secret: openstack_user_domain }
