@@ -1,0 +1,43 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+
+imports:
+  - http://cloudify.co/spec/cloudify/5.0.5/types.yaml
+
+
+inputs:
+
+  external_network_id:
+    description: The Openstack ID of an external network.
+    type: string
+
+  network_id:
+    description: The Openstack ID of a newly created network.
+    type: string
+
+  subnet_id:
+    description: The Openstack ID of a newly created subnet.
+    type: string
+
+  router_id:
+    description: The Openstack ID of a newly created router.
+    type: string
+
+
+capabilities:
+
+  external_network_id:
+    description: The Openstack ID of an external network.
+    value: { get_input: external_network_id }
+
+  network_id:
+    description: The Openstack ID of a newly created network.
+    value: { get_input: network_id }
+
+  subnet_id:
+    description: The Openstack ID of a newly created subnet.
+    value: { get_input: subnet_id }
+
+  router_id:
+    description: The Openstack ID of a newly created router.
+    value: { get_input: router_id }

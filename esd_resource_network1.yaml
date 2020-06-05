@@ -1,0 +1,139 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+
+imports:
+  - http://cloudify.co/spec/cloudify/5.0.5/types.yaml
+  - plugin:cloudify-openstack-plugin?version=>=3.2.9
+
+
+dsl_definitions:
+
+  client_config: &client_config
+    username: { get_secret: openstack_username }
+    password: { get_secret: openstack_password }
+    project_name: { get_input: openstack_tenant }
+    auth_url: { get_secret: openstack_auth_url }
+    region_name: { get_secret: openstack_region }
+    user_domain_name: { get_secret: openstack_user_domain }
+    project_domain_name: { get_secret: openstack_project_domain }
+
+
+inputs:
+
+  target_resource_tenant:
+    description: >
+      Defines BU resource tenant.
+    type: string
+
+  target_resource_blueprint:
+    description: >
+      Defines blueprint that will be used to create the deployment
+      with resource definition.
+    type: string
+
+  target_resource_deployment:
+    description: >
+      Deployment ID inside the target_resource_tenant that will expose
+      the resource data to the BU e.g. resource pool ID for BU.
+    type: string
+
+  external_network_id:
+    description: >
+      ID of the external network, which we can use for allocating floating IPs.
+    type: string
+
+  subnet_dns_nameservers:
+    description: >
+       List of dns name servers associated with the subnet.
+       Default is an empty list.
+    default: []
+
+  subnet_allocation_pools:
+    description: >
+       Allocation pools with start and end IP addresses for this
+       subnet. If allocation_pools are not specified, OpenStack Networking
+       automatically allocates pools for covering all IP addresses in the CIDR,
+       excluding the address reserved for the subnet gateway by default.
+    default: []
+
+  subnet_cidr:
+    description: >
+      CIDR of the subnet.
+    type: string
+
+
+node_templates:
+
+  ## External network
+  external_network:
+    type: cloudify.nodes.openstack.Network
+    properties:
+      client_config: *client_config
+      resource_config:
+        id: { get_input: external_network_id }
+      use_external_resource: true
+
+  ## Router
+  router:
+    type: cloudify.nodes.openstack.Router
+    properties:
+      client_config: *client_config
+      resource_config:
+        name: router1
+    relationships:
+      - type: cloudify.relationships.connected_to
+        target: external_network
+
+  ## Network
+  network:
+    type: cloudify.nodes.openstack.Network
+    properties:
+      client_config: *client_config
+      resource_config:
+        name: network1
+
+  subnet:
+    type: cloudify.nodes.openstack.Subnet
+    properties:
+      client_config: *client_config
+      resource_config:
+        name: subnet1
+        dns_nameservers: { get_input: subnet_dns_nameservers }
+        allocation_pools: { get_input: subnet_allocation_pools }
+        cidr: { get_input: subnet_cidr }
+    relationships:
+      - type: cloudify.relationships.contained_in
+        target: network
+      - type: cloudify.relationships.openstack.subnet_connected_to_router
+        target: router
+
+  ## Resource deployment component
+  resource_deployment:
+    type: cloudify.nodes.ServiceComponent
+    properties:
+      client:
+          host: 127.0.0.1
+          username: esd_designer1
+          password: cloudify123
+          tenant: { get_input: target_resource_tenant }
+      resource_config:
+        blueprint:
+          id: { get_input: target_resource_blueprint }
+          blueprint_archive: https://github.com/Cloudify-PS/multitenancy-demo/archive/master.zip
+          main_file_name: bu_resource_network1.yaml
+        deployment:
+          id: { get_input: target_resource_deployment }
+          inputs:
+            external_network_id: { get_attribute: [external_network_id, id] }
+            network_id: { get_attribute: [network, id] }
+            subnet_id: { get_attribute: [subnet, id] }
+            router_id: { get_attribute: [router, id] }
+    relationships:
+      - type: cloudify.relationships.depends_on
+        target: external_network
+      - type: cloudify.relationships.depends_on
+        target: router
+      - type: cloudify.relationships.depends_on
+        target: network
+      - type: cloudify.relationships.depends_on
+        target: subnet
