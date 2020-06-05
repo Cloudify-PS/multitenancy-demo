@@ -98,6 +98,7 @@ node_templates:
       client_config: *client_config
       resource_config:
         name: subnet1
+        ip_version: 4
         dns_nameservers: { get_input: subnet_dns_nameservers }
         allocation_pools: { get_input: subnet_allocation_pools }
         cidr: { get_input: subnet_cidr }
