@@ -124,7 +124,7 @@ node_templates:
         deployment:
           id: { get_input: target_resource_deployment }
           inputs:
-            external_network_id: { get_attribute: [external_network_id, id] }
+            external_network_id: { get_attribute: [external_network, id] }
             network_id: { get_attribute: [network, id] }
             subnet_id: { get_attribute: [subnet, id] }
             router_id: { get_attribute: [router, id] }
