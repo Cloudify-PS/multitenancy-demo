@@ -80,7 +80,7 @@ node_templates:
         packages:
           - httpd
         write_files:
-          - path: /var/www/index.html
+          - path: /var/www/html/index.html
             content:
               resource_type: file_resource
               resource_name: templates/index.html

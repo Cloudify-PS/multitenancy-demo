@@ -120,7 +120,7 @@ node_templates:
       resource_config:
         blueprint:
           id: { get_input: target_resource_blueprint }
-          blueprint_archive: https://github.com/Cloudify-PS/multitenancy-demo/archive/master.zip
+          blueprint_archive: https://github.com/Cloudify-PS/multitenancy-demo/releases/download/0.1/bu_resource_network1.zip
           main_file_name: bu_resource_network1.yaml
         deployment:
           id: { get_input: target_resource_deployment }
