@@ -3,9 +3,9 @@
     "id": "bu_ims1",
     "name": "bu_ims1",
     "description": "Deploy IMS on OpenStack",
-    "html_url": "https://github.com/Cloudify-PS/multitenancy-demo",
-    "zip_url": "https://github.com/Cloudify-PS/multitenancy-demo/archive/master.zip",
-    "readme_url": "https://github.com/Cloudify-PS/multitenancy-demo/blob/master/README.md",
+    "html_url": "",
+    "zip_url": "https://github.com/Cloudify-PS/multitenancy-demo/releases/download/0.2/bu_ims1.zip",
+    "readme_url": "",
     "created_at": "2020-06-05T14:11:13Z",
     "updated_at": "2020-06-05T14:11:13Z"
   }
