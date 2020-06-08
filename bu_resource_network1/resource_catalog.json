@@ -1,0 +1,12 @@
+[
+  {
+    "id": "bu_resource_network1",
+    "name": "bu_resource_network1",
+    "description": "Share networking service capabilities",
+    "html_url": "",
+    "zip_url": "https://github.com/Cloudify-PS/multitenancy-demo/releases/download/0.2/bu_resource_network1.zip",
+    "readme_url": "",
+    "created_at": "2020-05-28T19:32:13Z",
+    "updated_at": "2020-05-28T19:32:13Z"
+  }
+]
