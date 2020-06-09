@@ -1,0 +1,10 @@
+target_resource_tenant: bu_resource_vpn
+target_resource_blueprint: bu_resource_network1
+target_resource_deployment: bu_resource_network1
+external_network_id: dda079ce-12cf-4309-879a-8e67aec94de4
+subnet_dns_nameservers:
+  - 8.8.8.8
+subnet_allocation_pools:
+  - start: 172.20.20.2
+    end: 172.20.20.254
+subnet_cidr: 172.20.20.0/24

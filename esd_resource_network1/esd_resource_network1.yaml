@@ -78,8 +78,6 @@ node_templates:
     type: cloudify.nodes.openstack.Router
     properties:
       client_config: *client_config
-      resource_config:
-        name: router1
     relationships:
       - type: cloudify.relationships.connected_to
         target: external_network
@@ -89,15 +87,12 @@ node_templates:
     type: cloudify.nodes.openstack.Network
     properties:
       client_config: *client_config
-      resource_config:
-        name: network1
 
   subnet:
     type: cloudify.nodes.openstack.Subnet
     properties:
       client_config: *client_config
       resource_config:
-        name: subnet1
         ip_version: 4
         dns_nameservers: { get_input: subnet_dns_nameservers }
         allocation_pools: { get_input: subnet_allocation_pools }
@@ -120,7 +115,7 @@ node_templates:
       resource_config:
         blueprint:
           id: { get_input: target_resource_blueprint }
-          blueprint_archive: https://github.com/Cloudify-PS/multitenancy-demo/releases/download/0.1/bu_resource_network1.zip
+          blueprint_archive: https://github.com/Cloudify-PS/multitenancy-demo/releases/download/0.2/bu_resource_network1.zip
           main_file_name: bu_resource_network1.yaml
         deployment:
           id: { get_input: target_resource_deployment }
